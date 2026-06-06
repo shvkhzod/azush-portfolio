@@ -181,13 +181,29 @@
     margin: 24px 0;
   }
 
+  @media (max-width: 640px) {
+    .page {
+      padding: 40px 20px 64px;
+      gap: 24px;
+    }
+
+    .prose {
+      font-size: 15px;
+      line-height: 1.65;
+    }
+  }
+
   @media (max-width: 480px) {
     .page {
-      padding: 48px 20px 72px;
+      padding: 32px 16px 56px;
     }
 
     .head h1 {
-      font-size: 19px;
+      font-size: 20px;
+    }
+
+    .subtitle {
+      font-size: 14px;
     }
   }
 </style>

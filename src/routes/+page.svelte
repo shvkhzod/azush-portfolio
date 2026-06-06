@@ -237,8 +237,10 @@
     transition: transform var(--dur-base) var(--ease);
   }
 
-  .hobby:hover {
-    transform: translateY(-2px);
+  @media (hover: hover) {
+    .hobby:hover {
+      transform: translateY(-2px);
+    }
   }
 
   .hobby img {
@@ -272,8 +274,14 @@
     max-width: 100%;
   }
 
-  .saying:hover h3 {
-    background-size: 100% 1px;
+  @media (hover: hover) {
+    .saying:hover h3 {
+      background-size: 100% 1px;
+    }
+
+    .saying:hover p {
+      color: var(--fg);
+    }
   }
 
   .saying p {
@@ -282,23 +290,38 @@
     transition: color var(--dur-base) var(--ease);
   }
 
-  .saying:hover p {
-    color: var(--fg);
-  }
-
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     .page {
-      padding: 48px var(--space-5) 72px;
-    }
-
-    .work-row {
-      grid-template-columns: 76px 1fr;
-      gap: var(--space-4);
+      padding: 40px var(--space-5) 64px;
+      gap: var(--space-8);
     }
 
     .hobbies {
       grid-template-columns: repeat(2, 1fr);
       gap: var(--space-3);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page {
+      padding: 32px var(--space-4) 56px;
+    }
+
+    .work-row {
+      grid-template-columns: 72px 1fr;
+      gap: var(--space-4);
+    }
+
+    .work {
+      gap: var(--space-4);
+    }
+
+    .saying {
+      padding: var(--space-1) 0;
+    }
+
+    .saying h3 {
+      font-size: 15px;
     }
   }
 </style>
