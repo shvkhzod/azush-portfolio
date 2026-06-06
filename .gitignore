@@ -1,0 +1,33 @@
+node_modules
+/.svelte-kit
+/build
+/dist
+
+# AI assistant artifacts
+/.claude
+/.agents
+/.cursor
+/.gemini
+/.kiro
+
+# Local source/reference assets (not part of the site)
+/avatar.png
+/avatar.jpg
+/azamat.png
+/azush.jpg
+/update.png
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Logs & system
+*.log
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
