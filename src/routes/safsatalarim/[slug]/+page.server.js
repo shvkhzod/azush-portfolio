@@ -36,14 +36,23 @@ export function entries() {
   return posts.map((p) => ({ slug: p.slug }));
 }
 
+function buildDescription(post) {
+  if (post.data.subtitle) return post.data.subtitle;
+  const firstPara = post.body.split(/\n\s*\n/)[0] || '';
+  const plain = firstPara.replace(/[*_`#>\[\]\(\)]/g, '').replace(/\s+/g, ' ').trim();
+  return plain.length > 160 ? plain.slice(0, 157).trimEnd() + '…' : plain;
+}
+
 export function load({ params }) {
   const post = posts.find((p) => p.slug === params.slug);
   if (!post) throw error(404, 'Topilmadi');
 
   return {
+    slug: post.slug,
     title: post.data.title,
     subtitle: post.data.subtitle ?? '',
     date: post.data.date ?? '',
+    description: buildDescription(post),
     html: marked.parse(post.body)
   };
 }

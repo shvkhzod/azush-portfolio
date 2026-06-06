@@ -1,6 +1,34 @@
 <script>
+  import { site } from '$lib/site.js';
   export let data;
-  $: ({ title, subtitle, date, html } = data);
+  $: ({ slug, title, subtitle, date, description, html } = data);
+
+  $: pageTitle = `${title} — ${site.name}`;
+  $: canonical = `${site.url}/safsatalarim/${slug}`;
+  $: ogImage = site.url + site.defaultImage;
+
+  $: jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    image: ogImage,
+    datePublished: date || undefined,
+    author: {
+      '@type': 'Person',
+      name: site.name,
+      url: site.url
+    },
+    publisher: {
+      '@type': 'Person',
+      name: site.name,
+      url: site.url
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonical
+    }
+  };
 
   function formatDate(iso) {
     if (!iso) return '';
@@ -11,7 +39,26 @@
 </script>
 
 <svelte:head>
-  <title>{title} — Azamat Matnazarov</title>
+  <title>{pageTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:locale" content={site.locale} />
+  {#if date}<meta property="article:published_time" content={date} />{/if}
+  <meta property="article:author" content={site.name} />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  {@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}</` + `script>`}
 </svelte:head>
 
 <main class="page">

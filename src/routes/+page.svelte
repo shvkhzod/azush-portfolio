@@ -1,7 +1,47 @@
 <script>
+  import { site } from '$lib/site.js';
   export let data;
   $: ({ bio, work, sayings, hobbies } = data);
+
+  $: pageTitle = bio.role ? `${bio.name} — ${bio.role}` : bio.name;
+  $: description = bio.body || site.description;
+  $: ogImage = site.url + (bio.avatar ?? site.defaultImage);
+  $: canonical = site.url + '/';
+
+  $: jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: bio.name,
+    jobTitle: bio.role,
+    description: bio.body,
+    url: site.url,
+    image: ogImage,
+    sameAs: [bio.cta_href, ...work.map((w) => w.href)].filter(Boolean)
+  };
 </script>
+
+<svelte:head>
+  <title>{pageTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+
+  <meta property="og:type" content="profile" />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:locale" content={site.locale} />
+  <meta property="profile:first_name" content="Azamat" />
+  <meta property="profile:last_name" content="Matnazarov" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  {@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}</` + `script>`}
+</svelte:head>
 
 <main class="page">
   <header class="intro">
